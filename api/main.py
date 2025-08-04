@@ -1,10 +1,20 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import datetime
 import json
 import os
 
 app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 # Path to the log file
 LOG_FILE = "sensor_logs.json"
@@ -14,7 +24,9 @@ class SensorData(BaseModel):
     humidity: float
     temperature: float
     device_id: str
-
+@app.get("/")
+def test():
+    return "gud working api"
 @app.post("/data/")
 async def receive_data(data: SensorData):
     try:
@@ -36,8 +48,4 @@ async def receive_data(data: SensorData):
         return {"status": "success"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
 

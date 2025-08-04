@@ -1,0 +1,2 @@
+{"moisture": 0, "humidity": 0.0, "temperature": 0.0, "device_id": "string", "timestamp": "2025-08-02T15:58:57.400270"}
+{"moisture": 1023, "humidity": 75.0, "temperature": 26.6, "device_id": "node_1", "timestamp": "2025-08-02T16:13:31.649022"}

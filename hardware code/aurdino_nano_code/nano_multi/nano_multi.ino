@@ -42,10 +42,10 @@ void loop() {
   Serial.print(temperature);
   Serial.println(" *C");
 
-  // Create data string to send
+  // Create data string to send (format matches NodeMCU parsing)
   String data = String("Moisture: ") + moistureLevel + 
-                ", Humidity: " + humidity + 
-                ", Temperature: " + temperature + " *C";
+                " | Humidity: " + humidity + 
+                " % | Temperature: " + temperature + " *C";
 
   // Send data to NodeMCU
   espSerial.println(data);
