@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from datetime import datetime
 import json
 import os
-
+from ai import generate_response
 app = FastAPI()
 
 # Add CORS middleware
@@ -44,8 +44,20 @@ async def receive_data(data: SensorData):
         # Append data to the log file
         with open(LOG_FILE, "a") as f:
             f.write(json.dumps(log_entry) + "\n")
-
+        # Generate response using the AI model
+        plant = "cotton"  # Assuming device_id is the plant name
+        sensordata = {
+            "moisture": data.moisture,
+            "humidity": data.humidity,
+            "temperature": data.temperature
+        }
+        print(f"sensors{sensordata}")
+        response = generate_response(plant, sensordata)
+        print(f"ai:{response}")  # For debugging purposes
         return {"status": "success"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
